@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter @Builder
-public class AccountPayable {
+public class AccountReceivable {
     private Long id;
     private String description;
     private BigDecimal amount;
-    private PayableStatus payableStatus;
+    private ReceivableStatus status;
     private LocalDate dueDate;
-    private LocalDate paymentDate;
+    private LocalDate receivedDate;
 
 }

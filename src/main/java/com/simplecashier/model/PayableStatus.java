@@ -1,6 +1,6 @@
 package com.simplecashier.model;
 
-public enum Status {
+public enum PayableStatus {
     PAID,
     PENDING
 }
