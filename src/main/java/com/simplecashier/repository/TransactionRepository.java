@@ -2,8 +2,13 @@ package com.simplecashier.repository;
 
 import com.simplecashier.db.DatabaseConnection;
 import com.simplecashier.model.Transaction;
+import com.simplecashier.model.TransactionType;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionRepository {
     public Long save(Transaction transaction) throws SQLException {
@@ -26,5 +31,28 @@ public class TransactionRepository {
             }
             return null;
         }
+    }
+
+    public List<Transaction> findAll() throws SQLException {
+        String sql = "SELECT * FROM transactions";
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Transaction t = Transaction.builder()
+                        .id(rs.getLong("id"))
+                        .description(rs.getString("description"))
+                        .amount(new BigDecimal(rs.getString("amount")))
+                        .type(TransactionType.valueOf(rs.getString("type")))
+                        .category(rs.getString("category"))
+                        .date(LocalDate.parse(rs.getString("date")))
+                        .build();
+                transactions.add(t);
+            }
+        }
+        return transactions;
     }
 }

@@ -2,13 +2,15 @@ package com.simplecashier.repository;
 
 import com.simplecashier.model.Transaction;
 import com.simplecashier.model.TransactionType;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
-public class test {
+public class repositoryTest {
     public static void main(String[] args) throws SQLException {
+        TransactionRepository repo = new TransactionRepository();
+
         Transaction t = Transaction.builder()
                 .description("Test sale")
                 .amount(new BigDecimal("150.00"))
@@ -17,8 +19,10 @@ public class test {
                 .date(LocalDate.now())
                 .build();
 
-        TransactionRepository repo = new TransactionRepository();
         Long id = repo.save(t);
         System.out.println("Saved with id: " + id);
+
+        List<Transaction> all = repo.findAll();
+        all.forEach(System.out::println);
     }
 }
